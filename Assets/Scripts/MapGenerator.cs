@@ -1,18 +1,107 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class MapGenerator : MonoBehaviour
 {
+    //These values are set in the Unity Editor
+    public GameObject TilesContainer;
+    public GameObject DecorationsContainer;
+    public GameObject BorderContainer;
+
+    public Sprite[] GrassTiles;
+    public Sprite[] Decorations;
+    public Sprite[] Borders;
+
+    public int MapHeight;
+    public int MapWidth;
+    public float DecorationDensity;
+
     // Start is called before the first frame update
     void Start()
     {
-        
+        GenerateMap();
+        GenerateDecorations();
+        GenerateBorders();
     }
 
-    // Update is called once per frame
-    void Update()
+    public void GenerateMap()
     {
-        
+        //Generate map cenetered at 0,0
+        for (int x = -MapWidth / 2; x < MapWidth / 2; x++)
+        {
+            for (int y = -MapHeight / 2; y < MapHeight / 2; y++)
+            {
+                //Create a new game object
+                GameObject tile = new GameObject();
+
+                //Add a sprite renderer
+                SpriteRenderer spriteRenderer = tile.AddComponent<SpriteRenderer>();
+
+                //Set the sprite renderer's sprite to a random grass tile
+                spriteRenderer.sprite = GrassTiles[Random.Range(0, GrassTiles.Length)];
+
+                //Set the tile's position
+                tile.transform.position = new Vector3(x, y, 3);
+                tile.transform.parent = TilesContainer.transform;
+            }
+        }
+    }
+
+    public void GenerateDecorations()
+    {
+        for (int x = -MapWidth / 2; x < MapWidth / 2; x++)
+        {
+            for (int y = -MapHeight / 2; y < MapHeight / 2; y++)
+            {
+                if (Random.Range(0f, 1f) < DecorationDensity)
+                {
+                    GameObject decoration = new GameObject();
+                    SpriteRenderer spriteRenderer = decoration.AddComponent<SpriteRenderer>();
+                    spriteRenderer.sprite = Decorations[Random.Range(0, Decorations.Length)];
+                    decoration.transform.position = new Vector3(x, y, 2);
+                    decoration.transform.parent = DecorationsContainer.transform;
+                }
+            }
+        }
+    }
+
+    public void GenerateBorders()
+    {
+        GenerateBorderLine(MapHeight / 2, -MapWidth / 2, 1, false, false);
+        GenerateBorderLine(MapHeight / 2, MapWidth / 2, -1, false, true);
+
+        GenerateBorderLine(MapWidth / 2, MapHeight / 2, -1, true, true);
+        GenerateBorderLine(MapWidth / 2, -MapHeight / 2, 1, true, false);
+
+    }
+
+    public void GenerateBorderLine(float startA, float startB, float offset, bool isHorizontal, bool mustAddOffset)
+    {
+        float index = -startA;
+        while (index < startA)
+        {
+            GameObject border = new GameObject();
+            SpriteRenderer spriteRenderer = border.AddComponent<SpriteRenderer>();
+            spriteRenderer.sprite = Borders[Random.Range(0, Borders.Length)];
+            float spriteHeight = spriteRenderer.sprite.bounds.size.y;
+            float spriteWidth = spriteRenderer.sprite.bounds.size.x;
+
+
+            float delta = offset;
+
+            if (isHorizontal)
+            {
+                delta += (mustAddOffset ? spriteHeight : -spriteHeight) / 2;
+                border.transform.position = new Vector3(index, startB + delta, 1);
+            }
+            else
+            {
+                delta += (mustAddOffset ? spriteWidth : -spriteWidth) / 2;
+                border.transform.position = new Vector3(startB + delta, index, 1);
+            }
+
+            border.transform.parent = BorderContainer.transform;
+            float spriteLength = isHorizontal ? spriteWidth : spriteHeight;
+            index += spriteLength * 0.2f + Random.Range(0f, spriteLength * 0.5f);
+        }
     }
 }
