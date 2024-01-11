@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    public GameObject crosshair;
     public float moveSpeed = 7f;
     public float dashDistanceMultiplier = 0.6f;
     public float dashCooldown = 0f;
@@ -25,5 +26,10 @@ public class PlayerController : MonoBehaviour
         transform.position += new Vector3(Input.GetAxisRaw("Horizontal")*moveSpeed*Time.deltaTime, Input.GetAxisRaw("Vertical")*moveSpeed*Time.deltaTime);
 
         if(dashCooldown > 0) dashCooldown -= Time.deltaTime;
+    }
+
+    private void LateUpdate()
+    {
+        crosshair.transform.position = Input.mousePosition;
     }
 }
