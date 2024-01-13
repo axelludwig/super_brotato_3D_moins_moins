@@ -1,4 +1,6 @@
+using NavMeshPlus.Components;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class MapGenerator : MonoBehaviour
 {
@@ -6,6 +8,9 @@ public class MapGenerator : MonoBehaviour
     public GameObject TilesContainer;
     public GameObject DecorationsContainer;
     public GameObject BorderContainer;
+
+    public GameObject SurfacePlane;
+    public NavMeshSurface NavMeshSurface;
 
     public Sprite[] GrassTiles;
     public Sprite[] Decorations;
@@ -19,13 +24,10 @@ public class MapGenerator : MonoBehaviour
     void Start()
     {
         GenerateMap();
-        GenerateDecorations();
-        GenerateBorders();
     }
 
-    public void GenerateMap()
+    private void GenerateBackground()
     {
-        //Generate map cenetered at 0,0
         for (int x = -MapWidth / 2; x < MapWidth / 2; x++)
         {
             for (int y = -MapHeight / 2; y < MapHeight / 2; y++)
@@ -44,6 +46,21 @@ public class MapGenerator : MonoBehaviour
                 tile.transform.parent = TilesContainer.transform;
             }
         }
+    }
+
+    private void InitNavMeshSurface()
+    {
+        SurfacePlane.transform.position = new Vector3(0, 0, 0);
+        SurfacePlane.transform.localScale = new Vector3(MapWidth - 1f, MapHeight - 1f, 1);
+        NavMeshSurface.BuildNavMesh();
+    }
+
+    public void GenerateMap()
+    {
+        GenerateBackground();
+        GenerateDecorations();
+        GenerateBorders();
+        InitNavMeshSurface();
     }
 
     public void GenerateDecorations()
