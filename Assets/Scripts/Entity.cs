@@ -7,4 +7,8 @@ public abstract class Entity
     public EntityStats Stats { get; set; }
     public string UnitName { get; set; }
 
+    protected virtual void InitStats()
+    {
+        Stats = new EntityStats(this);
+    }
 }

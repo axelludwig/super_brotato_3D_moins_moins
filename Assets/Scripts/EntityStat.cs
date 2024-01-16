@@ -13,7 +13,7 @@ public class EntityStat
     {
         _entity = p_Entity;
         _baseFlatValue = 0;
-        _percentageValue = p_PercentageValue;
+        _percentageValue = 0;
         _tempFlatValue = 0;
         _tempPercentageValue = 0;
     }

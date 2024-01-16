@@ -7,10 +7,16 @@ public class EntityStats
     public EntityStats(Entity p_Entity)
     {
         _entity = p_Entity;
-        MaxHealthStat = new EntityStat(_entity);
-        Damage = new EntityStat(_entity);
-        Armor = new EntityStat(_entity);
-        MovePointStat = new EntityStat(_entity);
+        //MaxHealthStat = new EntityStat(_entity);
+        //Damage = new EntityStat(_entity);
+        //Armor = new EntityStat(_entity);
+        //MovePointStat = new EntityStat(_entity);
+
+        Damage = new EntityStat(_entity, 100);
+        Armor= new EntityStat(_entity, 100);
+        MovePointStat = new EntityStat(_entity, 100);
+        Range = new EntityStat(_entity, 100);
+        //Stats = new EntityStat(_entity, 200);
     }
 
     private Entity _entity;
@@ -23,15 +29,15 @@ public class EntityStats
 
     public EntityStat Damage { get; set; }
     public EntityStat Armor { get; set; }
-    public EntityStat AttackSpeed { get; set; };
+    public EntityStat AttackSpeed { get; set; }
 
-    public EntityStat Luck { get; set; };
-    public EntityStat Range { get; set; };
-    public EntityStat CritChance { get; set; };
-    public EntityStat CritDamage { get; set; };
+    public EntityStat Luck { get; set; }
+    public EntityStat Range { get; set; }
+    public EntityStat CritChance { get; set; }
+    public EntityStat CritDamage { get; set; }
 
-    public EntityStat LifeSteal { get; set; };
-    public EntityStat ElementalDamage { get; set; };
+    public EntityStat LifeSteal { get; set; }
+    public EntityStat ElementalDamage { get; set; }
 
     #region MovePoints
 
