@@ -2,13 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
-using static UnityEngine.GraphicsBuffer;
 
-public class EnnemyController : MonoBehaviour
+public class EnnemyMovementController : MonoBehaviour
 {
     private NavMeshAgent Agent;
-    public Camera cam;
-    
     private TargetSeeker TargetSeeker;
     private float SetTargetInterval = 0.2f;
     private float SetTargetTimer = 0f;
@@ -20,7 +17,6 @@ public class EnnemyController : MonoBehaviour
     void Start()
     {
         TargetSeeker = GetComponent<TargetSeeker>();
-        cam = Camera.main;
         Agent = GetComponent<NavMeshAgent>();
         Agent.updateRotation = false;
         Agent.updateUpAxis = false;
@@ -29,6 +25,8 @@ public class EnnemyController : MonoBehaviour
     
     void Update()
     {
+        Agent.transform.position = new Vector3(Agent.transform.position.x, Agent.transform.position.y, 0);
+
         //Call SetTarget when timer is over
         if (SetTargetTimer <= 0)
         {
@@ -36,7 +34,7 @@ public class EnnemyController : MonoBehaviour
             SetTargetTimer = SetTargetInterval;
 
             //Set target
-            SetTarget();
+            SetSeekerTarget();
         }
         else
         {
@@ -46,7 +44,7 @@ public class EnnemyController : MonoBehaviour
     }
 
     static float agentDrift = 0.001f; // minimal
-    private void SetTarget()
+    private void SetSeekerTarget()
     {
         if (TargetSeeker.Target != null)
         {

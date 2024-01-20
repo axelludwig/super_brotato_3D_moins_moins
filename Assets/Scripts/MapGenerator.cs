@@ -40,9 +40,10 @@ public class MapGenerator : MonoBehaviour
 
                 //Set the sprite renderer's sprite to a random grass tile
                 spriteRenderer.sprite = GrassTiles[Random.Range(0, GrassTiles.Length)];
+                spriteRenderer.sortingOrder = 0;
 
                 //Set the tile's position
-                tile.transform.position = new Vector3(x, y, 3);
+                tile.transform.position = new Vector3(x, y, 0);
                 tile.transform.parent = TilesContainer.transform;
             }
         }
@@ -74,7 +75,8 @@ public class MapGenerator : MonoBehaviour
                     GameObject decoration = new GameObject();
                     SpriteRenderer spriteRenderer = decoration.AddComponent<SpriteRenderer>();
                     spriteRenderer.sprite = Decorations[Random.Range(0, Decorations.Length)];
-                    decoration.transform.position = new Vector3(x, y, 2);
+                    spriteRenderer.sortingOrder = 1;
+                    decoration.transform.position = new Vector3(x, y, 0);
                     decoration.transform.parent = DecorationsContainer.transform;
                 }
             }
@@ -99,6 +101,7 @@ public class MapGenerator : MonoBehaviour
             GameObject border = new GameObject();
             SpriteRenderer spriteRenderer = border.AddComponent<SpriteRenderer>();
             spriteRenderer.sprite = Borders[Random.Range(0, Borders.Length)];
+            spriteRenderer.sortingOrder = 2;
             float spriteHeight = spriteRenderer.sprite.bounds.size.y;
             float spriteWidth = spriteRenderer.sprite.bounds.size.x;
 
@@ -108,12 +111,12 @@ public class MapGenerator : MonoBehaviour
             if (isHorizontal)
             {
                 delta += (mustAddOffset ? spriteHeight : -spriteHeight) / 2;
-                border.transform.position = new Vector3(index, startB + delta, 1);
+                border.transform.position = new Vector3(index, startB + delta, 0);
             }
             else
             {
                 delta += (mustAddOffset ? spriteWidth : -spriteWidth) / 2;
-                border.transform.position = new Vector3(startB + delta, index, 1);
+                border.transform.position = new Vector3(startB + delta, index, 0);
             }
 
             border.transform.parent = BorderContainer.transform;
